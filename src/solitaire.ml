@@ -60,6 +60,7 @@ let apply_move board x1 y1 x2 y2 =
   done;
   new_board;;
   
+(* Do we still need this function? *)
 let make_move board x1 y1 x2 y2 = 
   let move_piece = get_item board x1 y1 in
   let target_pos = get_item board x2 y2 in
@@ -94,7 +95,7 @@ let get_moves board x y =
         moves := (x, y - 2) :: (!moves);
       )
     );
-    if ((y + 2) >= 0) then (
+    if ((y + 2) <= 6) then (
       let jump_over = get_item board x (y + 1) in
       let target = get_item board x (y + 2) in
       if ((jump_over == _MARBLE_) && (target == _EMPTY__)) then (
@@ -105,4 +106,4 @@ let get_moves board x y =
   moves;;
   
   
-get_moves start_board 3 1;;
+get_moves start_board 6 0;;
