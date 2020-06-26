@@ -35,7 +35,15 @@ let apply_move board x1 y1 x2 y2 =
   let new_row = ref [] in
   for y = 6 downto 0 do 
     for x = 6 downto 0 do
-      new_row := (get_item board x y) :: (!new_row);
+      if ((x == x1) && (y == y1)) then 
+        new_row := _EMPTY__ :: (!new_row)
+      else (
+        if ((x == x2) && (y == y2)) then (
+          new_row := _MARBLE_ :: (!new_row)
+        ) else (
+          new_row := (get_item board x y) :: (!new_row);
+        )
+      )
     done;
     new_board := (!new_row) :: (!new_board);
     new_row := [];
