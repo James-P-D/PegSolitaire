@@ -30,6 +30,16 @@ let draw_board board =
   Printf.printf "      +---------+\n";    
   flush stdout;;
 
+let is_complete board = 
+  let total_marbles = ref 0 in
+  for y = 6 downto 0 do 
+    for x = 6 downto 0 do
+      if ((get_item board x y) == _MARBLE_) then 
+        total_marbles := (!total_marbles) + 1;
+    done;
+  done;
+  (!total_marbles) == 1;;
+
 let apply_move board x1 y1 x2 y2 =
   let new_board = ref [] in
   let new_row = ref [] in
@@ -59,4 +69,4 @@ let make_move board x1 y1 x2 y2 =
     );
   );;
 
-draw_board (!(make_move start_board 3 1 3 3));;
+is_complete start_board;;
