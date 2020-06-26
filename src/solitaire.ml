@@ -69,4 +69,40 @@ let make_move board x1 y1 x2 y2 =
     );
   );;
 
-is_complete start_board;;
+let get_moves board x y =
+  let moves = ref [] in
+  let move_piece = get_item board x y in
+  if (move_piece == _MARBLE_) then (
+    if ((x - 2) >= 0) then (
+      let jump_over = get_item board (x - 1) y in
+      let target = get_item board (x - 2) y in
+      if ((jump_over == _MARBLE_) && (target == _EMPTY__)) then (
+        moves := (x - 2, y) :: (!moves);
+      )
+    );
+    if ((x + 2) <= 6) then (
+      let jump_over = get_item board (x + 1) y in
+      let target = get_item board (x + 2) y in
+      if ((jump_over == _MARBLE_) && (target == _EMPTY__)) then (
+        moves := (x + 2, y) :: (!moves);
+      )
+    );
+    if ((y - 2) >= 0) then (
+      let jump_over = get_item board x (y - 1) in
+      let target = get_item board x (y - 2) in
+      if ((jump_over == _MARBLE_) && (target == _EMPTY__)) then (
+        moves := (x, y - 2) :: (!moves);
+      )
+    );
+    if ((y + 2) >= 0) then (
+      let jump_over = get_item board x (y + 1) in
+      let target = get_item board x (y + 2) in
+      if ((jump_over == _MARBLE_) && (target == _EMPTY__)) then (
+        moves := (x, y + 2) :: (!moves);
+      )
+    );
+  );
+  moves;;
+  
+  
+get_moves start_board 3 1;;
