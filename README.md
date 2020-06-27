@@ -44,7 +44,7 @@ Then the player could move `(5, 2)` to `(3, 2)` which would remove `(4, 2)`:
         +---------+
 0       | O  O  O |
 1 +-----+ O     O +-----+
-2 | O  O  O     O  O  O |
+2 | O  O  O  O        O |
 3 | O  O  O  O  O  O  O |
 4 | O  O  O  O  O  O  O |
 5 +-----+ O  O  O +-----+
