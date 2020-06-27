@@ -4,6 +4,9 @@ let __VOID__ = 0;;
 let _EMPTY__ = 1;;
 let _MARBLE_ = 2;;
 
+let _HEIGHT = 6;;
+let _WIDTH = 6;;
+
 let int_to_string i =
   if (i = _MARBLE_) then  " O " else "   ";;
 
@@ -33,8 +36,8 @@ let draw_board board =
 
 let is_complete board = 
   let total_marbles = ref 0 in
-  for y = 6 downto 0 do 
-    for x = 6 downto 0 do
+  for y = 0 to _HEIGHT do 
+    for x = 0 to _WIDTH  do
       if ((get_item board x y) == _MARBLE_) then (
         total_marbles := (!total_marbles) + 1;
       )
@@ -48,8 +51,8 @@ let apply_move board x1 y1 x2 y2 =
   let new_row = ref [] in
   let middle_x = ((x1 + x2) / 2) in
   let middle_y = ((y1 + y2) / 2) in
-  for y = 6 downto 0 do 
-    for x = 6 downto 0 do
+  for y = 0 to _HEIGHT do 
+    for x = 0 to _WIDTH do
       if ((x == x1) && (y == y1)) then 
         new_row := _EMPTY__ :: (!new_row)
       else (
@@ -93,7 +96,7 @@ let get_moves board x y =
         moves := (x - 2, y) :: (!moves);
       )
     );
-    if ((x + 2) <= 6) then (
+    if ((x + 2) <= _WIDTH) then (
       let jump_over = get_item board (x + 1) y in
       let target = get_item board (x + 2) y in
       if ((jump_over == _MARBLE_) && (target == _EMPTY__)) then (
@@ -107,7 +110,7 @@ let get_moves board x y =
         moves := (x, y - 2) :: (!moves);
       )
     );
-    if ((y + 2) <= 6) then (
+    if ((y + 2) <= _HEIGHT) then (
       let jump_over = get_item board x (y + 1) in
       let target = get_item board x (y + 2) in
       if ((jump_over == _MARBLE_) && (target == _EMPTY__)) then (
@@ -123,17 +126,19 @@ let rec solve board =
     draw_board board;
     true;
   ) else (
-    for y = 0 to 6 do 
-      for x = 0 to 6 do
+    for y = 0 to _HEIGHT do 
+      for x = 0 to _WIDTH do
         let possible_moves = get_moves board x y in
         for i = 0 to ((List.length (!possible_moves)) - 1) do
           let (x2, y2) = List.nth (!possible_moves) i in
           let new_board = apply_move board x y x2 y2 in
-          solve (!new_board);
+          solve (!new_board)
         done;
       done;
     done;
     false;
   );;
 
-solve start_board;;
+let do_stuff =
+  draw_board start_board;
+  solve start_board 0;;
