@@ -35,22 +35,25 @@ let is_complete board =
   let total_marbles = ref 0 in
   for y = 6 downto 0 do 
     for x = 6 downto 0 do
-      if ((get_item board x y) == _MARBLE_) then 
+      if ((get_item board x y) == _MARBLE_) then (
         total_marbles := (!total_marbles) + 1;
+      )
     done;
   done;
   (!total_marbles) == 1;;
 
 let apply_move board x1 y1 x2 y2 =
-  Printf.printf "(%d, %d) -> (%d, %d)\n" x1 y1 x2 y2;
+  (*Printf.printf "(%d, %d) -> (%d, %d)\n" x1 y1 x2 y2;*)
   let new_board = ref [] in
   let new_row = ref [] in
+  let middle_x = ((x1 + x2) / 2) in
+  let middle_y = ((y1 + y2) / 2) in
   for y = 6 downto 0 do 
     for x = 6 downto 0 do
       if ((x == x1) && (y == y1)) then 
         new_row := _EMPTY__ :: (!new_row)
       else (
-        if ((x == ((x1 + x2) / 2)) && (y == ((y1 + y2) / 2))) then
+        if ((x == middle_x) && (y == middle_y)) then
           (
             new_row := _EMPTY__ :: (!new_row)
           ) else (
@@ -68,6 +71,7 @@ let apply_move board x1 y1 x2 y2 =
   new_board;;
   
 (* Do we still need this function? *)
+(*
 let make_move board x1 y1 x2 y2 = 
   let move_piece = get_item board x1 y1 in
   let target_pos = get_item board x2 y2 in
@@ -76,6 +80,7 @@ let make_move board x1 y1 x2 y2 =
       apply_move board x1 y1 x2 y2;
     );
   );;
+  *)
 
 let get_moves board x y =
   let moves = ref [] in
@@ -112,9 +117,10 @@ let get_moves board x y =
   );
   moves;;
   
-let rec solve board = 
-  draw_board board;
+let rec solve board =   
+  (*let str = input_line stdin in*)
   if (is_complete board) then (
+    draw_board board;
     true;
   ) else (
     for y = 0 to 6 do 
@@ -122,7 +128,7 @@ let rec solve board =
         let possible_moves = get_moves board x y in
         for i = 0 to ((List.length (!possible_moves)) - 1) do
           let (x2, y2) = List.nth (!possible_moves) i in
-          let new_board = make_move board x y x2 y2 in
+          let new_board = apply_move board x y x2 y2 in
           solve (!new_board);
         done;
       done;
