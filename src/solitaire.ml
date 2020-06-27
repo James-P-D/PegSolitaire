@@ -50,10 +50,15 @@ let apply_move board x1 y1 x2 y2 =
       if ((x == x1) && (y == y1)) then 
         new_row := _EMPTY__ :: (!new_row)
       else (
-        if ((x == x2) && (y == y2)) then (
-          new_row := _MARBLE_ :: (!new_row)
-        ) else (
-          new_row := (get_item board x y) :: (!new_row);
+        if ((x == ((x1 + x2) / 2)) && (y == ((y1 + y2) / 2))) then
+          (
+            new_row := _EMPTY__ :: (!new_row)
+          ) else (
+          if ((x == x2) && (y == y2)) then (
+            new_row := _MARBLE_ :: (!new_row)
+          ) else (
+            new_row := (get_item board x y) :: (!new_row);
+          )
         )
       )
     done;
@@ -124,7 +129,5 @@ let rec solve board =
     done;
     false;
   );;
-
-(* get_moves start_board 6 0;; *)
 
 solve start_board;;
