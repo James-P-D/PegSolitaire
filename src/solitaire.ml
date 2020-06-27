@@ -106,18 +106,25 @@ let get_moves board x y =
     );
   );
   moves;;
-(*
   
-  let solve board = 
-    if (is_complete board) then true
-    else (
-      for y = 0 to 6 do 
-        for x = 0 to 6 do
-          let possible_moves = get_moves board x y;
+let rec solve board = 
+  draw_board board;
+  if (is_complete board) then (
+    true;
+  ) else (
+    for y = 0 to 6 do 
+      for x = 0 to 6 do
+        let possible_moves = get_moves board x y in
+        for i = 0 to ((List.length (!possible_moves)) - 1) do
+          let (x2, y2) = List.nth (!possible_moves) i in
+          let new_board = make_move board x y x2 y2 in
+          solve (!new_board);
         done;
       done;
-    );;
-*)
+    done;
+    false;
+  );;
+
 (* get_moves start_board 6 0;; *)
 
-draw_board start_board;;
+solve start_board;;
