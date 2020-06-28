@@ -15,6 +15,37 @@ let large_board = [[void;   void;   marble; marble; marble; void;   void];
                    [marble; marble; marble; marble; marble; marble; marble];
                    [void;   void;   marble; marble; marble; void;   void];
                    [void;   void;   marble; marble; marble; void;   void]];;
+let large_solution = [(3,1,3,3);
+                      (1,2,3,2);
+                      (2,0,2,2);
+                      (4,0,2,0);
+                      (3,2,1,2);
+                      (0,2,2,2);
+                      (4,2,4,0);
+                      (6,2,4,2);
+                      (2,3,2,1);
+                      (2,0,2,2);
+                      (0,3,2,3);
+                      (2,3,2,1);
+                      (4,3,4,1);
+                      (4,0,4,2);
+                      (6,3,4,3);
+                      (4,3,4,1);
+                      (2,5,2,3);
+                      (0,4,2,4);
+                      (2,4,2,2);
+                      (2,1,2,3);
+                      (2,3,4,3);
+                      (4,4,4,2);
+                      (4,1,4,3);
+                      (6,4,4,4);
+                      (3,4,5,4);
+                      (4,6,4,4);
+                      (4,3,4,5);
+                      (2,6,4,6);
+                      (4,6,4,4);
+                      (5,4,3,4);
+                      (3,5,3,3)];;
 
 (********************************************************************************)
 
@@ -107,26 +138,36 @@ let apply_move board width height x1 y1 x2 y2 =
   let new_row = ref [] in
   let middle_x = ((x1 + x2) / 2) in
   let middle_y = ((y1 + y2) / 2) in
-  for y = 0 to (height - 1) do 
-    for x = 0 to (width - 1) do
-      if ((x == x1) && (y == y1)) then 
-        new_row := empty :: (!new_row)
-      else (
-        if ((x == middle_x) && (y == middle_y)) then (
-          new_row := empty :: (!new_row)
-        ) else (
-          if ((x == x2) && (y == y2)) then (
-            new_row := marble :: (!new_row)
-          ) else (
-            new_row := (get_item board x y) :: (!new_row)
-          )
-        )
-      )
-    done;
-    new_board := (!new_row) :: (!new_board);
-    new_row := [];
-  done;
-  new_board;;
+  
+  let move_piece = get_item board x1 y1 in
+  let middle_piece = get_item board middle_x middle_y in
+  let target_pos = get_item board x2 y2 in
+  if (move_piece != marble) then (raise (SolitaireException ("(" ^ string_of_int(x1) ^ ", " ^ string_of_int(y1) ^ ") is not a marble (start)" ))) else (
+    if (middle_piece != marble) then (raise (SolitaireException ("(" ^ string_of_int(middle_x) ^ ", " ^ string_of_int(middle_y) ^ ") is not marble (jump)" ))) else (
+      if (target_pos != empty) then (raise (SolitaireException ("(" ^ string_of_int(x2) ^ ", " ^ string_of_int(y2) ^ ") is not empty" ))) else (
+        for y = (height - 1) downto 0 do 
+          for x = (width - 1) downto 0 do
+            if ((x == x1) && (y == y1)) then 
+              new_row := empty :: (!new_row)
+            else (
+              if ((x == middle_x) && (y == middle_y)) then (
+                new_row := empty :: (!new_row)
+              ) else (
+                if ((x == x2) && (y == y2)) then (
+                  new_row := marble :: (!new_row)
+                ) else (
+                  new_row := (get_item board x y) :: (!new_row)
+                )
+              )
+            )
+          done;
+          new_board := (!new_row)::(!new_board);
+          new_row := [];
+        done;
+        new_board;
+      );
+    );
+  );;
   
 (********************************************************************************)
 
@@ -167,6 +208,7 @@ let get_moves board width height x y =
   
 (********************************************************************************)
 
+(*
 let rec solve board width height =
   draw_board board width height;
   if (is_complete board width height) then (
@@ -185,6 +227,29 @@ let rec solve board width height =
     done;
     false;
   );;
+*)
+  
+  
+(*
+let rec do_stuff board width height x y possible_moves = 
+  match possible_moves with
+  | [] -> false;
+  | head::tail -> let (x2, y2) = head in
+      let new_board = apply_move board width height x y x2 y2 in
+      if(solve (!new_board) width height 0 0) then true
+      else do_stuff board width height x y tail
+  
+  
+and solve board width height x y = 
+    draw_board board width height;
+  if (is_complete board width height) then (
+    print_endline "Success!";
+true;
+) else (
+  let possible_moves = get_moves board width height x y in
+  do_stuff board width height x y !possible_moves    
+)
+  *)
   
 (********************************************************************************)
 
@@ -203,9 +268,23 @@ let solve_medium =
 *)
 
 (********************************************************************************)
-  
+(*  
 let solve_small =
   draw_board small_board small_board_width small_board_height;
-  solve small_board small_board_width small_board_height;;
-  
+  solve small_board small_board_width small_board_height 0 0;;
+*)
 (********************************************************************************) 
+
+let rec cheat_large board width height solution_list =
+  match solution_list with
+  | [] ->
+      draw_board board width height;
+      "done!"
+  | head::tail -> 
+      draw_board board width height;
+      let (x1,y1,x2,y2) = head in
+      let new_board = apply_move board width height x1 y1 x2 y2 in
+      cheat_large (!new_board) width height tail;;
+
+let cheat_large =
+  cheat_large large_board large_board_width large_board_height large_solution;; 
