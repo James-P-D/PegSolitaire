@@ -64,17 +64,32 @@ let draw_board board width height =
 
 (********************************************************************************)
 
-let is_complete board width height = 
-  let total_marbles = ref 0 in
-  for y = 0 to (height - 1) do 
-    for x = 0 to (width - 1)  do
-      if ((get_item board x y) == marble) then (
-        total_marbles := (!total_marbles) + 1;
-      )
-    done;
-  done;
-  (!total_marbles) == 1;;
+let one_if_marble board x y =
+  if ((get_item board x y) == marble) then 1 else 0;;
 
+(********************************************************************************)
+                                                                                 
+let rec is_complete board width height x y n =
+  if (n > 1) then (
+    false;
+  ) else (
+    if ((x + 1) == width) then (
+      if ((y + 1) == height) then (
+        true;
+      ) else (
+        is_complete board width height 0 (y + 1) (n + (one_if_marble board x y));
+      )
+    ) else (
+      is_complete board width height (x + 1) y (n + (one_if_marble board x y));
+    )
+  )
+
+
+(********************************************************************************)
+                                                                                 
+let is_complete board width height =
+  is_complete board width height 0 0 0;;
+  
 (********************************************************************************)
 
 let apply_move board width height x1 y1 x2 y2 =
@@ -88,10 +103,9 @@ let apply_move board width height x1 y1 x2 y2 =
       if ((x == x1) && (y == y1)) then 
         new_row := empty :: (!new_row)
       else (
-        if ((x == middle_x) && (y == middle_y)) then
-          (
-            new_row := empty :: (!new_row)
-          ) else (
+        if ((x == middle_x) && (y == middle_y)) then (
+          new_row := empty :: (!new_row)
+        ) else (
           if ((x == x2) && (y == y2)) then (
             new_row := marble :: (!new_row)
           ) else (
