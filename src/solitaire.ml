@@ -30,7 +30,7 @@ let medium_board = [[void;   marble; marble; marble; void];
 
 let int_to_string i =
   if (i == marble) then  " O " else (
-    if (i == empty) then " - " else "   ";
+    if (i == empty) then " - " else "   "
   );;
   
 (********************************************************************************)
@@ -48,16 +48,16 @@ let get_item board x y =
 let draw_board board width height = 
   Printf.printf "  ";
   for x = 0 to (width - 1) do
-    Printf.printf " %d " x;
+    Printf.printf " %d " x
   done;
   Printf.printf "\n";
     
   for y = 0 to (height - 1) do 
     Printf.printf "%d " y;
     for x = 0 to (width - 1)  do
-      Printf.printf "%s" (int_to_string(get_item board x y));
+      Printf.printf "%s" (int_to_string(get_item board x y))
     done;
-    Printf.printf "\n";
+    Printf.printf "\n"
   done;
   Printf.printf "\n";
   flush stdout;;  
@@ -75,12 +75,12 @@ let rec is_complete board width height x y n =
   ) else (
     if ((x + 1) == width) then (
       if ((y + 1) == height) then (
-        true;
+        true
       ) else (
-        is_complete board width height 0 (y + 1) (n + (one_if_marble board x y));
+        is_complete board width height 0 (y + 1) (n + (one_if_marble board x y))
       )
     ) else (
-      is_complete board width height (x + 1) y (n + (one_if_marble board x y));
+      is_complete board width height (x + 1) y (n + (one_if_marble board x y))
     )
   )
 
@@ -109,7 +109,7 @@ let apply_move board width height x1 y1 x2 y2 =
           if ((x == x2) && (y == y2)) then (
             new_row := marble :: (!new_row)
           ) else (
-            new_row := (get_item board x y) :: (!new_row);
+            new_row := (get_item board x y) :: (!new_row)
           )
         )
       )
@@ -129,28 +129,28 @@ let get_moves board width height x y =
       let jump_over = get_item board (x - 1) y in
       let target = get_item board (x - 2) y in
       if ((jump_over == marble) && (target == empty)) then (
-        moves := (x - 2, y) :: (!moves);
+        moves := (x - 2, y) :: (!moves)
       )
     );
     if ((x + 2) < width) then (
       let jump_over = get_item board (x + 1) y in
       let target = get_item board (x + 2) y in
       if ((jump_over == marble) && (target == empty)) then (
-        moves := (x + 2, y) :: (!moves);
+        moves := (x + 2, y) :: (!moves)
       )
     );
     if ((y - 2) >= 0) then (
       let jump_over = get_item board x (y - 1) in
       let target = get_item board x (y - 2) in
       if ((jump_over == marble) && (target == empty)) then (
-        moves := (x, y - 2) :: (!moves);
+        moves := (x, y - 2) :: (!moves)
       )
     );
     if ((y + 2) < height) then (
       let jump_over = get_item board x (y + 1) in
       let target = get_item board x (y + 2) in
       if ((jump_over == marble) && (target == empty)) then (
-        moves := (x, y + 2) :: (!moves);
+        moves := (x, y + 2) :: (!moves)
       )
     );
   );
@@ -170,9 +170,9 @@ let rec solve board width height =
         for i = 0 to ((List.length (!possible_moves)) - 1) do
           let (x2, y2) = List.nth (!possible_moves) i in
           let new_board = apply_move board width height x y x2 y2 in
-          solve (!new_board) width height;
-        done;
-      done;
+          solve (!new_board) width height
+        done
+      done
     done;
     false;
   );;
