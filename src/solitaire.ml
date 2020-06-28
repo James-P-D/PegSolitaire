@@ -275,16 +275,17 @@ let solve_small =
 *)
 (********************************************************************************) 
 
-let rec cheat_large board width height solution_list =
+let rec apply_move_list board width height solution_list =
   match solution_list with
   | [] ->
       draw_board board width height;
-      "done!"
+      is_complete board width height;
   | head::tail -> 
       draw_board board width height;
+      let _ = input_line stdin in
       let (x1,y1,x2,y2) = head in
       let new_board = apply_move board width height x1 y1 x2 y2 in
-      cheat_large (!new_board) width height tail;;
+      apply_move_list (!new_board) width height tail;;
 
-let cheat_large =
-  cheat_large large_board large_board_width large_board_height large_solution;; 
+let cheat_large =  
+  apply_move_list large_board large_board_width large_board_height large_solution;; 
