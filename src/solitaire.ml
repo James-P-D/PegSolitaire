@@ -28,6 +28,15 @@ let medium_board = [[void;   marble; marble; marble; void];
 
 (********************************************************************************)
 
+let small_board_width = 3;;
+let small_board_height = 4;;
+let small_board = [[marble; marble; marble];
+                   [marble; marble; marble];
+                   [marble; marble; marble];
+                   [marble; marble; empty]];;
+
+(********************************************************************************)
+
 let int_to_string i =
   if (i == marble) then  " O " else (
     if (i == empty) then " - " else "   "
@@ -93,7 +102,7 @@ let is_complete board width height =
 (********************************************************************************)
 
 let apply_move board width height x1 y1 x2 y2 =
-  (* Printf.printf "(%d, %d) -> (%d, %d)\n" x1 y1 x2 y2; *)
+  Printf.printf "(%d, %d) -> (%d, %d)\n" x1 y1 x2 y2;
   let new_board = ref [] in
   let new_row = ref [] in
   let middle_x = ((x1 + x2) / 2) in
@@ -159,10 +168,10 @@ let get_moves board width height x y =
 (********************************************************************************)
 
 let rec solve board width height =
-  (*let str = input_line stdin in*)
+  draw_board board width height;
   if (is_complete board width height) then (
-    draw_board board width height;
-    raise (SolitaireException ("It worked"));
+    print_endline "Success!";
+    true;
   ) else (
     for y = 0 to (height - 1) do 
       for x = 0 to (width - 1) do
@@ -179,6 +188,24 @@ let rec solve board width height =
   
 (********************************************************************************)
 
-let do_stuff =
+(*
+let solve_large =
+  draw_board large_board large_board_width large_board_height;
+  solve large_board large_board_width large_board_height;;
+*)
+
+(********************************************************************************)
+
+(*
+let solve_medium =
   draw_board medium_board medium_board_width medium_board_height;
   solve medium_board medium_board_width medium_board_height;;
+*)
+
+(********************************************************************************)
+  
+let solve_small =
+  draw_board small_board small_board_width small_board_height;
+  solve small_board small_board_width small_board_height;;
+  
+(********************************************************************************) 
