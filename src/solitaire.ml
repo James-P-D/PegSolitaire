@@ -172,7 +172,9 @@ let is_complete board width height =
    jumped over it. *)
 
 let apply_move board width height x1 y1 x2 y2 =
+(*
   Printf.printf "(%d, %d) -> (%d, %d)\n" x1 y1 x2 y2;
+  *)
   let new_board = ref [] in
   let new_row = ref [] in
   let middle_x = ((x1 + x2) / 2) in
@@ -310,25 +312,36 @@ let rec get_all_marble_positions board width height x y =
 let get_all_marble_positions board width height =
   get_all_marble_positions board width height 0 0;;
 
+let rec test_marbles board width height all_marble_positions =
+  match all_marble_positions with
+  | [] -> false;
+  | head::tail -> let (x, y) = head in
+      let possible_moves = get_moves board width height x y in
+      if(test_move board width height x y !possible_moves) then true
+      else test_marbles board width height tail
 
-let rec do_stuff board width height x y possible_moves = 
+and test_move board width height x1 y1 possible_moves = 
   match possible_moves with
   | [] -> false;
   | head::tail -> let (x2, y2) = head in
-      let new_board = apply_move board width height x y x2 y2 in
-      if(solve (!new_board) width height 0 0) then true
-      else do_stuff board width height x y tail
+      (*
+      Printf.printf "test_move (%d, %d) -> (%d, %d)\n" x1 y1 x2 y2;
+       *)
+      let new_board = apply_move board width height x1 y1 x2 y2 in
+      if(solve (!new_board) width height) then true
+      else test_move board width height x1 y1 tail
    
-and solve board width height = 
-  draw_board board width height;
+and solve board width height =
   if (is_complete board width height) then (
+    draw_board board width height;
     print_endline "Success!";
-    true;
+    true
   ) else (
     let all_marble_positions = get_all_marble_positions board width height in
-    
-    let possible_moves = get_moves board width height x y in
-    do_stuff board width height x y !possible_moves    
+    (*
+    Printf.printf "%d marble positions\n" (List.length all_marble_positions);
+    *)
+    test_marbles board width height all_marble_positions;
   )
 
 (********************************************************************************)
@@ -340,11 +353,11 @@ let cheat_large =
     
 (********************************************************************************)
 
-(*
+
 let solve_large =
   draw_board large_board large_board_width large_board_height;
   solve large_board large_board_width large_board_height;;
-*)
+
 
 (********************************************************************************)
 
@@ -356,13 +369,8 @@ let solve_medium =
 
 (********************************************************************************)
 
-(*  
-  let solve_small =
-    draw_board small_board small_board_width small_board_height;
-    solve small_board small_board_width small_board_height;;
-*)
-
-(********************************************************************************)
-                                                                                 
-let foo = get_all_marble_positions small_board small_board_width small_board_height;;
-foo;;
+(*
+let solve_small =
+  draw_board small_board small_board_width small_board_height;
+  solve small_board small_board_width small_board_height;; 
+ *)
