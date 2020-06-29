@@ -3,9 +3,11 @@
 
 ![Screenshot](https://github.com/James-P-D/Peg_solitaire/blob/master/screenshot.gif)
 
+*Note this screenshot has been edited for brevity. The full process takes several minutes.*
+
 ## Details
 
-Peg-Solitaire is a one-player game whereby a number of marbles are placed on a grid with one empty location. The objective of the game is to remove marbles from the grid by jumping existing marbles into empty locations, eventually resulting in a board which contains only one marble. Note that marbles can only jump horizontally and vertically and not diagonally, and that they can only jump over pieces that are immediate neighbours.
+Peg-Solitaire is a one-player game whereby a number of marbles are placed on a grid with one empty location. The objective of the game is to remove marbles from the grid by jumping existing marbles into empty locations, eventually resulting in a board which contains only one marble in the centre cell. Note that marbles can only jump horizontally and vertically and not diagonally, and that they can only jump over pieces that are immediate neighbours.
 
 For example, given the initial [English Peg Solitaire](https://en.wikipedia.org/wiki/Peg_solitaire#Board) board..
 
@@ -63,7 +65,7 @@ If we make bad decisions, we might find ourselves with a board like this:
 
 At this point we are stuck because there are no more valid moves we can make.
 
-However, if we choose wisely, we'll end up with a board like this, which is a winning state:
+However, if we choose wisely, we'll end up with a board like this, which is the winning state:
 
 ```
     0  1  2  3  4  5  6 
@@ -76,8 +78,37 @@ However, if we choose wisely, we'll end up with a board like this, which is a wi
 6         -  -  -
 ```
 
-According to [Durango Bill's website](http://www.durangobill.com/Peg33.html#:~:text=The%204%20possible%20legal%20moves,center%20hole%2C%20the%20player%20wins.) there are a huge number of possible games.
+For much more information on the puzzle see [Durango Bill's website](http://www.durangobill.com/Peg33.html#:~:text=The%204%20possible%20legal%20moves,center%20hole%2C%20the%20player%20wins.)
 
 ## Running
 
-The application has been tested with the [Windows OCaml v 4.10.0](https://ocaml.org/docs/install.html). You can try running it on the [Try OCAML](https://try.ocamlpro.com/) website, but it will be *very* slow, and you'll need to comment-out any `input_line stdin` statements as the site does not appear to support user input.
+The application has been tested with the [Windows OCaml v 4.10.0](https://ocaml.org/docs/install.html). Simply run the `OCaml64` shortcut and then enter `ocaml` to start the interpreter:
+
+```
+jdorr@DESKTOP-MF9T345 ~
+$ ocaml
+        OCaml version 4.10.0
+#
+```
+
+Now copy and paste the code from [solitaire.ml](https://github.com/James-P-D/PegSolitaire/blob/master/src/solitaire.ml). You should see something like the following:
+
+```
+stuff
+```
+
+There will be a long pause whilst our program searches for a solution to the puzzle. After a few minutes you should see the following:
+
+```
+more stuff
+```
+
+Our program has found a solution which can now be stepped-through by pressing enter:
+
+```
+more final stuff
+```
+
+Finally, you can also try running our program on the [Try OCAML](https://try.ocamlpro.com/) website. It will be *very* slow, and you'll need to comment-out any `input_line stdin` statements as the site does not appear to support user input. The site will also think that the application is stuck in an infinite look and attempt to timeout. Simply hit the <kbd>10 seconds!</kbd> button to bump-up the timeout:
+
+![Screenshot](https://github.com/James-P-D/Peg_solitaire/blob/master/tryocamlwebsite.gif)
