@@ -149,7 +149,7 @@ let rec is_complete board width height x y n =
   ) else (
     if ((x + 1) == width) then (
       if ((y + 1) == height) then (
-        true
+        (n + (one_if_marble board x y)) > 1
       ) else (
         is_complete board width height 0 (y + 1) (n + (one_if_marble board x y))
       )
@@ -353,11 +353,11 @@ let cheat_large =
     
 (********************************************************************************)
 
-
+(*
 let solve_large =
   draw_board large_board large_board_width large_board_height;
   solve large_board large_board_width large_board_height;;
-
+*)
 
 (********************************************************************************)
 
@@ -369,8 +369,7 @@ let solve_medium =
 
 (********************************************************************************)
 
-(*
+
 let solve_small =
   draw_board small_board small_board_width small_board_height;
   solve small_board small_board_width small_board_height;; 
- *)
