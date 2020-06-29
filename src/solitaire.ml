@@ -57,36 +57,6 @@ let large_solution = [(3,1,3,3);
 
 (********************************************************************************)
 
-(* Medium board dimensions *)
-
-let medium_board_width = 5;;
-let medium_board_height = 5;;
-
-(* Medium board layout *)
-
-let medium_board = [[void;   marble; marble; marble; void];
-                    [marble; marble; marble; marble; marble];
-                    [marble; marble; empty;  marble; marble];
-                    [marble; marble; marble; marble; marble];
-                    [void;   marble; marble; marble; void]];;
-
-(********************************************************************************)
-
-(* Small board dimensions *)
-
-let small_board_width = 3;;
-let small_board_height = 5;;
-
-(* Small board layout *)
-
-let small_board = [[marble; marble; empty];
-                   [empty; marble; marble];
-                   [marble; empty; marble];
-                   [marble; marble; marble];
-                   [marble; marble; marble]];;
-
-(********************************************************************************)
-
 (* Convert an integer to a string. Marbles are '0', empty spaces are '-', and
    cells which are not on the board are ' ' *)
 
@@ -132,11 +102,16 @@ let draw_board board width height =
 
 (********************************************************************************)
 
+let is_marble board x y =
+  if ((get_item board x y) == marble) then true else false;;
+
+(********************************************************************************)
+
 (* Returns 1 if item at (x, y) is a marble. (Used for counting marbles on board
    to check if we have reached a terminal state.) *)
 
 let one_if_marble board x y =
-  if ((get_item board x y) == marble) then 1 else 0;;
+  if (is_marble board x y) then 1 else 0;;
 
 (********************************************************************************)
 
@@ -150,7 +125,7 @@ let rec is_complete board width height x y n =
   ) else (
     if ((x + 1) == width) then (
       if ((y + 1) == height) then (
-        not ((n + (one_if_marble board x y)) > 1)
+        (((n + (one_if_marble board x y)) == 1) && (is_marble board 3 3))
       ) else (
         is_complete board width height 0 (y + 1) (n + (one_if_marble board x y))
       )
@@ -265,30 +240,6 @@ let rec apply_move_list board width height solution_list =
   
 (********************************************************************************)
 
-(*
-let rec solve board width height =
-  draw_board board width height;
-  if (is_complete board width height) then (
-    print_endline "Success!";
-    true;
-  ) else (
-    for y = 0 to (height - 1) do 
-      for x = 0 to (width - 1) do
-        let possible_moves = get_moves board width height x y in
-        for i = 0 to ((List.length (!possible_moves)) - 1) do
-          let (x2, y2) = List.nth (!possible_moves) i in
-          let new_board = apply_move board width height x y x2 y2 in
-          solve (!new_board) width height
-        done
-      done
-    done;
-    false;
-  );;
-*)
-
-let is_marble board x y =
-  if ((get_item board x y) == marble) then true else false;;
-
 let rec get_all_marble_positions board width height x y =
   if ((x + 1) == width) then (
     if ((y + 1) == height) then (
@@ -325,9 +276,6 @@ and test_move board width height x1 y1 possible_moves =
   match possible_moves with
   | [] -> false;
   | head::tail -> let (x2, y2) = head in
-      (*
-      Printf.printf "test_move (%d, %d) -> (%d, %d)\n" x1 y1 x2 y2;
-       *)
       let new_board = apply_move board width height x1 y1 x2 y2 in
       if(solve (!new_board) width height) then true
       else test_move board width height x1 y1 tail
@@ -339,9 +287,6 @@ and solve board width height =
     true
   ) else (
     let all_marble_positions = get_all_marble_positions board width height in
-    (*
-    Printf.printf "%d marble positions\n" (List.length all_marble_positions);
-    *)
     test_marbles board width height all_marble_positions;
   )
 
@@ -358,20 +303,3 @@ let cheat_large =
 let solve_large =
   draw_board large_board large_board_width large_board_height;
   solve large_board large_board_width large_board_height;;
-
-
-(********************************************************************************)
-
-(*
-let solve_medium =
-  draw_board medium_board medium_board_width medium_board_height;
-  solve medium_board medium_board_width medium_board_height;;
-*)
-
-(********************************************************************************)
-
-(*
-let solve_small =
-  draw_board small_board small_board_width small_board_height;
-  solve small_board small_board_width small_board_height;; 
-*)
