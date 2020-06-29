@@ -17,7 +17,8 @@ For example, given the initial [English Peg Solitaire](https://en.wikipedia.org/
 3  O  O  O  -  O  O  O 
 4  O  O  O  O  O  O  O 
 5        O  O  O       
-6        O  O  O       ```
+6        O  O  O       
+```
 
 ..the player could choose to move the marble at `(3, 1)` to `(3, 3)`, which would cause the removal of the marble at `(3, 2)`:
 
