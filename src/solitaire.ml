@@ -256,7 +256,7 @@ let rec apply_move_list board width height solution_list =
   | head::tail -> 
       draw_board board width height;
       let _ = input_line stdin in
-      let (x1,y1,x2,y2) = head in
+      let (x1, y1, x2, y2) = head in
       let new_board = apply_move board width height x1 y1 x2 y2 in
       apply_move_list (!new_board) width height tail;;
   
@@ -282,8 +282,34 @@ let rec solve board width height =
     false;
   );;
 *)
-  
-  
+
+let is_marble board x y =
+  if ((get_item board x y) == marble) then true else false;;
+
+let rec get_all_marble_positions board width height x y =
+  if ((x + 1) == width) then (
+    if ((y + 1) == height) then (
+      [];
+    ) else (
+      let remaining_positions = get_all_marble_positions board width height 0 (y + 1) in
+      if (is_marble board x y) then (
+        (x, y) :: remaining_positions;
+      ) else (
+        remaining_positions;
+      )
+    )
+  ) else (
+    let remaining_positions = get_all_marble_positions board width height (x + 1) y in
+    if (is_marble board x y) then (
+      (x, y) :: remaining_positions;
+    ) else (
+      remaining_positions;
+    )
+  );;
+
+let get_all_marble_positions board width height =
+  get_all_marble_positions board width height 0 0;;
+
 
 let rec do_stuff board width height x y possible_moves = 
   match possible_moves with
@@ -292,18 +318,20 @@ let rec do_stuff board width height x y possible_moves =
       let new_board = apply_move board width height x y x2 y2 in
       if(solve (!new_board) width height 0 0) then true
       else do_stuff board width height x y tail
- 
-  
+   
 and solve board width height x y = 
-    draw_board board width height;
+  draw_board board width height;
   if (is_complete board width height) then (
     print_endline "Success!";
-true;
-) else (
-  let possible_moves = get_moves board width height x y in
-  do_stuff board width height x y !possible_moves    
-)
-  *)
+    true;
+  ) else (
+    let possible_moves = get_moves board width height x y in
+    do_stuff board width height x y !possible_moves    
+  )
+  
+
+let solve board width height =
+  solve board width height 0 0;;
 
 (********************************************************************************)
 
@@ -329,9 +357,14 @@ let solve_medium =
 *)
 
 (********************************************************************************)
-  
-let solve_small =
-  draw_board small_board small_board_width small_board_height;
-  solve small_board small_board_width small_board_height 0 0;;
+
+(*  
+  let solve_small =
+    draw_board small_board small_board_width small_board_height;
+    solve small_board small_board_width small_board_height;;
+*)
 
 (********************************************************************************)
+                                                                                 
+let foo = get_all_marble_positions small_board small_board_width small_board_height;;
+foo;;
