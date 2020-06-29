@@ -319,19 +319,17 @@ let rec do_stuff board width height x y possible_moves =
       if(solve (!new_board) width height 0 0) then true
       else do_stuff board width height x y tail
    
-and solve board width height x y = 
+and solve board width height = 
   draw_board board width height;
   if (is_complete board width height) then (
     print_endline "Success!";
     true;
   ) else (
+    let all_marble_positions = get_all_marble_positions board width height in
+    
     let possible_moves = get_moves board width height x y in
     do_stuff board width height x y !possible_moves    
   )
-  
-
-let solve board width height =
-  solve board width height 0 0;;
 
 (********************************************************************************)
 
