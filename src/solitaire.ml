@@ -1,4 +1,13 @@
+(********************************************************************************)
+
+(* Our custom exception which will be thrown if we attempt to apply a move in which either
+   A) The start cell is not a marble
+   B) The cell we are jumping over is not a marble
+   C) The target cell of our jump is not empty *)
+
 exception SolitaireException of string;;
+
+(********************************************************************************)
     
 let void = 0;;
 let empty = 1;;
@@ -6,54 +15,22 @@ let marble = 2;;
 
 (********************************************************************************)
 
-(* Large board dimensions *)
+(* English board dimensions *)
 
-let large_board_width = 7;;
-let large_board_height = 7;;
+let english_board_width = 7;;
+let english_board_height = 7;;
 
-(* Large board layout *)
+(* English board layout *)
 
-let large_board = [[void;   void;   marble; marble; marble; void;   void];
-                   [void;   void;   marble; marble; marble; void;   void];
-                   [marble; marble; marble; marble; marble; marble; marble];
-                   [marble; marble; marble; empty;  marble; marble; marble];
-                   [marble; marble; marble; marble; marble; marble; marble];
-                   [void;   void;   marble; marble; marble; void;   void];
-                   [void;   void;   marble; marble; marble; void;   void]];;
+let english_board = [[void;   void;   marble; marble; marble; void;   void];
+                     [void;   void;   marble; marble; marble; void;   void];
+                     [marble; marble; marble; marble; marble; marble; marble];
+                     [marble; marble; marble; empty;  marble; marble; marble];
+                     [marble; marble; marble; marble; marble; marble; marble];
+                     [void;   void;   marble; marble; marble; void;   void];
+                     [void;   void;   marble; marble; marble; void;   void]];;
 
-(* Large board hard-coded solution *)
-                   
-let large_solution = [(3,1,3,3);
-                      (1,2,3,2);
-                      (2,0,2,2);
-                      (4,0,2,0);
-                      (3,2,1,2);
-                      (0,2,2,2);
-                      (4,2,4,0);
-                      (6,2,4,2);
-                      (2,3,2,1);
-                      (2,0,2,2);
-                      (0,3,2,3);
-                      (2,3,2,1);
-                      (4,3,4,1);
-                      (4,0,4,2);
-                      (6,3,4,3);
-                      (4,3,4,1);
-                      (2,5,2,3);
-                      (0,4,2,4);
-                      (2,4,2,2);
-                      (2,1,2,3);
-                      (2,3,4,3);
-                      (4,4,4,2);
-                      (4,1,4,3);
-                      (6,4,4,4);
-                      (3,4,5,4);
-                      (4,6,4,4);
-                      (4,3,4,5);
-                      (2,6,4,6);
-                      (4,6,4,4);
-                      (5,4,3,4);
-                      (3,5,3,3)];;
+(********************************************************************************)
 
 (********************************************************************************)
 
@@ -292,14 +269,24 @@ and solve board width height =
 
 (********************************************************************************)
 
-(*  
-let cheat_large =  
-  apply_move_list large_board large_board_width large_board_height large_solution;; 
+(*
+let solve_english =
+  draw_board english_board english_board_width english_board_height;
+  solve english_board english_board_width english_board_height;;
 *)
-    
+
 (********************************************************************************)
 
-
-let solve_large =
-  draw_board large_board large_board_width large_board_height;
-  solve large_board large_board_width large_board_height;;
+(*
+let solve_english =
+  Printf.printf "Starting solve... This may take several minutes..!\n"    
+  draw_board english_board english_board_width english_board_height;
+  Printf.printf "Complete!\n"    
+  let solution_list = solve english_board english_board_width english_board_height [] in
+  if (List.length solution_list > 0) then (
+    Printf.printf "Press ENTER to step through moves to complete puzzle\n\n"
+    apply_move_list board width height solution_list;;  
+  ) else (  
+    Printf.printf "No solution found!\n"
+  )
+*)
