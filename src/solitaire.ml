@@ -6,8 +6,13 @@ let marble = 2;;
 
 (********************************************************************************)
 
+(* Large board dimensions *)
+
 let large_board_width = 7;;
 let large_board_height = 7;;
+
+(* Large board layout *)
+
 let large_board = [[void;   void;   marble; marble; marble; void;   void];
                    [void;   void;   marble; marble; marble; void;   void];
                    [marble; marble; marble; marble; marble; marble; marble];
@@ -15,6 +20,9 @@ let large_board = [[void;   void;   marble; marble; marble; void;   void];
                    [marble; marble; marble; marble; marble; marble; marble];
                    [void;   void;   marble; marble; marble; void;   void];
                    [void;   void;   marble; marble; marble; void;   void]];;
+
+(* Large board hard-coded solution *)
+                   
 let large_solution = [(3,1,3,3);
                       (1,2,3,2);
                       (2,0,2,2);
@@ -49,8 +57,13 @@ let large_solution = [(3,1,3,3);
 
 (********************************************************************************)
 
+(* Medium board dimensions *)
+
 let medium_board_width = 5;;
 let medium_board_height = 5;;
+
+(* Medium board layout *)
+
 let medium_board = [[void;   marble; marble; marble; void];
                     [marble; marble; marble; marble; marble];
                     [marble; marble; empty;  marble; marble];
@@ -59,14 +72,22 @@ let medium_board = [[void;   marble; marble; marble; void];
 
 (********************************************************************************)
 
+(* Small board dimensions *)
+
 let small_board_width = 3;;
 let small_board_height = 4;;
+
+(* Small board layout *)
+
 let small_board = [[marble; marble; marble];
                    [marble; marble; marble];
                    [marble; marble; marble];
                    [marble; marble; empty]];;
 
 (********************************************************************************)
+
+(* Convert an integer to a string. Marbles are '0', empty spaces are '-', and
+   cells which are not on the board are ' ' *)
 
 let int_to_string i =
   if (i == marble) then  " O " else (
@@ -75,15 +96,21 @@ let int_to_string i =
   
 (********************************************************************************)
 
+(* Get row y *)
+
 let get_row board y =
   List.nth board y;;  
   
 (********************************************************************************)
 
+(* Get item at cell (x, y) *)
+
 let get_item board x y = 
   List.nth (get_row board y) x;;
 
 (********************************************************************************)
+
+(* Display the board *)
 
 let draw_board board width height = 
   Printf.printf "  ";
@@ -104,10 +131,17 @@ let draw_board board width height =
 
 (********************************************************************************)
 
+(* Returns 1 if item at (x, y) is a marble. (Used for counting marbles on board
+   to check if we have reached a terminal state.) *)
+
 let one_if_marble board x y =
   if ((get_item board x y) == marble) then 1 else 0;;
 
 (********************************************************************************)
+
+(* Check if board is complete. If number of marbles left is greater than 1 then
+   return false, otherwise return true. (x, y) is current cell, whilst n is
+   our counter which we increment recursively. *)
                                                                                  
 let rec is_complete board width height x y n =
   if (n > 1) then (
@@ -124,13 +158,18 @@ let rec is_complete board width height x y n =
     )
   )
 
-
 (********************************************************************************)
-                                                                                 
+                                               
+(* Check if board is complete. Start at cell (0, 0) with counter also set to zero *)
+                                               
 let is_complete board width height =
   is_complete board width height 0 0 0;;
   
 (********************************************************************************)
+
+(* Apply a move. Take the piece located at cell (x1, y1) and move it to (x2, y2)
+   and then mark the cell ((x1+x2)/2, (y1+y2)/2) as empty since we will have
+   jumped over it. *)
 
 let apply_move board width height x1 y1 x2 y2 =
   Printf.printf "(%d, %d) -> (%d, %d)\n" x1 y1 x2 y2;
@@ -142,6 +181,7 @@ let apply_move board width height x1 y1 x2 y2 =
   let move_piece = get_item board x1 y1 in
   let middle_piece = get_item board middle_x middle_y in
   let target_pos = get_item board x2 y2 in
+  (* TODO: Can we remove these checks? *)
   if (move_piece != marble) then (raise (SolitaireException ("(" ^ string_of_int(x1) ^ ", " ^ string_of_int(y1) ^ ") is not a marble (start)" ))) else (
     if (middle_piece != marble) then (raise (SolitaireException ("(" ^ string_of_int(middle_x) ^ ", " ^ string_of_int(middle_y) ^ ") is not marble (jump)" ))) else (
       if (target_pos != empty) then (raise (SolitaireException ("(" ^ string_of_int(x2) ^ ", " ^ string_of_int(y2) ^ ") is not empty" ))) else (
@@ -205,6 +245,20 @@ let get_moves board width height x y =
     );
   );
   moves;;
+
+(********************************************************************************) 
+
+let rec apply_move_list board width height solution_list =
+  match solution_list with
+  | [] ->
+      draw_board board width height;
+      is_complete board width height;
+  | head::tail -> 
+      draw_board board width height;
+      let _ = input_line stdin in
+      let (x1,y1,x2,y2) = head in
+      let new_board = apply_move board width height x1 y1 x2 y2 in
+      apply_move_list (!new_board) width height tail;;
   
 (********************************************************************************)
 
@@ -230,7 +284,7 @@ let rec solve board width height =
 *)
   
   
-(*
+
 let rec do_stuff board width height x y possible_moves = 
   match possible_moves with
   | [] -> false;
@@ -238,7 +292,7 @@ let rec do_stuff board width height x y possible_moves =
       let new_board = apply_move board width height x y x2 y2 in
       if(solve (!new_board) width height 0 0) then true
       else do_stuff board width height x y tail
-  
+ 
   
 and solve board width height x y = 
     draw_board board width height;
@@ -250,7 +304,14 @@ true;
   do_stuff board width height x y !possible_moves    
 )
   *)
-  
+
+(********************************************************************************)
+
+(*  
+let cheat_large =  
+  apply_move_list large_board large_board_width large_board_height large_solution;; 
+*)
+    
 (********************************************************************************)
 
 (*
@@ -268,24 +329,9 @@ let solve_medium =
 *)
 
 (********************************************************************************)
-(*  
+  
 let solve_small =
   draw_board small_board small_board_width small_board_height;
   solve small_board small_board_width small_board_height 0 0;;
-*)
-(********************************************************************************) 
 
-let rec apply_move_list board width height solution_list =
-  match solution_list with
-  | [] ->
-      draw_board board width height;
-      is_complete board width height;
-  | head::tail -> 
-      draw_board board width height;
-      let _ = input_line stdin in
-      let (x1,y1,x2,y2) = head in
-      let new_board = apply_move board width height x1 y1 x2 y2 in
-      apply_move_list (!new_board) width height tail;;
-
-let cheat_large =  
-  apply_move_list large_board large_board_width large_board_height large_solution;; 
+(********************************************************************************)
