@@ -127,4 +127,5 @@ more final stuff
 
 Finally, you can also try running the program on the [Try OCAML](https://try.ocamlpro.com/) website. It will be *very* slow, and you'll need to comment-out any `input_line stdin` statements as the site does not appear to support user input. The site will also think that the application is stuck in an infinite loop and attempt to timeout. Simply hit the <kbd>10 seconds!</kbd> button to bump-up the timeout:
 
+(10fps)  
 ![Screenshot](https://github.com/James-P-D/Peg_solitaire/blob/master/tryocamlwebsite.gif)
