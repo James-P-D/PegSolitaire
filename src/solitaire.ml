@@ -125,9 +125,7 @@ let is_complete board width height =
    jumped over it. *)
 
 let apply_move board width height x1 y1 x2 y2 =
-(*
-  Printf.printf "(%d, %d) -> (%d, %d)\n" x1 y1 x2 y2;
-  *)
+  (* Printf.printf "(%d, %d) -> (%d, %d)\n" x1 y1 x2 y2; *)  
   let new_board = ref [] in
   let new_row = ref [] in
   let middle_x = ((x1 + x2) / 2) in
@@ -218,9 +216,14 @@ let rec apply_move_list board width height solution_list =
 (********************************************************************************)
 
 let rec get_all_marble_positions board width height x y =
+  (*Printf.printf "get_all_marble_positions (%d, %d)\n" x y;*)
   if ((x + 1) == width) then (
     if ((y + 1) == height) then (
-      [];
+      if (is_marble board x y) then (
+        [(x, y)];
+      ) else (
+        [];
+      )
     ) else (
       let remaining_positions = get_all_marble_positions board width height 0 (y + 1) in
       if (is_marble board x y) then (
@@ -269,11 +272,11 @@ and solve board width height =
 
 (********************************************************************************)
 
-(*
+
 let solve_english =
   draw_board english_board english_board_width english_board_height;
   solve english_board english_board_width english_board_height;;
-*)
+
 
 (********************************************************************************)
 
