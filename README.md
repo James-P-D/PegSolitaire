@@ -8,7 +8,7 @@
 
 ## Details
 
-Peg-Solitaire is a one-player game whereby a number of marbles are placed on a grid with one empty location. The objective of the game is to remove marbles from the grid by jumping over them into empty locations, eventually resulting in a board which contains only one marble in the centre cell. Note that marbles can only jump horizontally and vertically and not diagonally, and that they can only jump over pieces that are immediate neighbours.
+Peg-Solitaire is a one-player game in which a number of marbles are placed on a grid with one empty location in the centre. The objective of the game is to remove marbles from the grid by jumping over them into empty locations, eventually resulting in a board which contains only one marble in the centre cell. Note that marbles can only jump horizontally and vertically and not diagonally, and that they can only jump over pieces that are immediate neighbours.
 
 For example, given the initial [English Peg Solitaire](https://en.wikipedia.org/wiki/Peg_solitaire#Board) board:
 
@@ -99,9 +99,6 @@ You can then run the `./solitaire.exe` executable:
 ```
 jdorr@DESKTOP-MF9T345 /cygdrive/c/Users/jdorr/Desktop/Dev/PegSolitaire/src
 $ ./solitaire.exe
-
-Searching for solution...
-This may take several minutes..!
    0  1  2  3  4  5  6
 0        O  O  O
 1        O  O  O
@@ -112,20 +109,348 @@ This may take several minutes..!
 6        O  O  O
 ```
 
-There will be a long pause whilst our program searches for a solution to the puzzle. After a few minutes you should see the following:
+There will be a long pause whilst our program searches for a solution to the puzzle. After ~20 seconds you should see the following:
 
 ```
-Completed search
+   0  1  2  3  4  5  6
+0        -  -  -
+1        -  -  -
+2  -  -  -  -  -  -  -
+3  -  -  -  O  -  -  -
+4  -  -  -  -  -  -  -
+5        -  -  -
+6        -  -  -
+
+Success!
 Press ENTER to step through moves to complete puzzle
 ```
 
-Our program has found a solution which can now be stepped-through by pressing enter:
+Our program has found a solution which can now be stepped-through by pressing <kbd>enter</kbd>:
 
 ```
-more final stuff
+   0  1  2  3  4  5  6
+0        O  O  O
+1        O  O  O
+2  O  O  O  O  O  O  O
+3  O  O  O  -  O  O  O
+4  O  O  O  O  O  O  O
+5        O  O  O
+6        O  O  O
+
+(3, 1) -> (3, 3)
+   0  1  2  3  4  5  6
+0        O  O  O
+1        O  -  O
+2  O  O  O  -  O  O  O
+3  O  O  O  O  O  O  O
+4  O  O  O  O  O  O  O
+5        O  O  O
+6        O  O  O
+
+(1, 2) -> (3, 2)
+   0  1  2  3  4  5  6
+0        O  O  O
+1        O  -  O
+2  O  -  -  O  O  O  O
+3  O  O  O  O  O  O  O
+4  O  O  O  O  O  O  O
+5        O  O  O
+6        O  O  O
+
+(2, 0) -> (2, 2)
+   0  1  2  3  4  5  6
+0        -  O  O
+1        -  -  O
+2  O  -  O  O  O  O  O
+3  O  O  O  O  O  O  O
+4  O  O  O  O  O  O  O
+5        O  O  O
+6        O  O  O
+
+(4, 0) -> (2, 0)
+   0  1  2  3  4  5  6
+0        O  -  -
+1        -  -  O
+2  O  -  O  O  O  O  O
+3  O  O  O  O  O  O  O
+4  O  O  O  O  O  O  O
+5        O  O  O
+6        O  O  O
+
+(3, 2) -> (1, 2)
+   0  1  2  3  4  5  6
+0        O  -  -
+1        -  -  O
+2  O  O  -  -  O  O  O
+3  O  O  O  O  O  O  O
+4  O  O  O  O  O  O  O
+5        O  O  O
+6        O  O  O
+
+(0, 2) -> (2, 2)
+   0  1  2  3  4  5  6
+0        O  -  -
+1        -  -  O
+2  -  -  O  -  O  O  O
+3  O  O  O  O  O  O  O
+4  O  O  O  O  O  O  O
+5        O  O  O
+6        O  O  O
+
+(4, 2) -> (4, 0)
+   0  1  2  3  4  5  6
+0        O  -  O
+1        -  -  -
+2  -  -  O  -  -  O  O
+3  O  O  O  O  O  O  O
+4  O  O  O  O  O  O  O
+5        O  O  O
+6        O  O  O
+
+(6, 2) -> (4, 2)
+   0  1  2  3  4  5  6
+0        O  -  O
+1        -  -  -
+2  -  -  O  -  O  -  -
+3  O  O  O  O  O  O  O
+4  O  O  O  O  O  O  O
+5        O  O  O
+6        O  O  O
+
+(2, 3) -> (2, 1)
+   0  1  2  3  4  5  6
+0        O  -  O
+1        O  -  -
+2  -  -  -  -  O  -  -
+3  O  O  -  O  O  O  O
+4  O  O  O  O  O  O  O
+5        O  O  O
+6        O  O  O
+
+(2, 0) -> (2, 2)
+   0  1  2  3  4  5  6
+0        -  -  O
+1        -  -  -
+2  -  -  O  -  O  -  -
+3  O  O  -  O  O  O  O
+4  O  O  O  O  O  O  O
+5        O  O  O
+6        O  O  O
+
+(0, 3) -> (2, 3)
+   0  1  2  3  4  5  6
+0        -  -  O
+1        -  -  -
+2  -  -  O  -  O  -  -
+3  -  -  O  O  O  O  O
+4  O  O  O  O  O  O  O
+5        O  O  O
+6        O  O  O
+
+(2, 3) -> (2, 1)
+   0  1  2  3  4  5  6
+0        -  -  O
+1        O  -  -
+2  -  -  -  -  O  -  -
+3  -  -  -  O  O  O  O
+4  O  O  O  O  O  O  O
+5        O  O  O
+6        O  O  O
+
+(4, 3) -> (4, 1)
+   0  1  2  3  4  5  6
+0        -  -  O
+1        O  -  O
+2  -  -  -  -  -  -  -
+3  -  -  -  O  -  O  O
+4  O  O  O  O  O  O  O
+5        O  O  O
+6        O  O  O
+
+(4, 0) -> (4, 2)
+   0  1  2  3  4  5  6
+0        -  -  -
+1        O  -  -
+2  -  -  -  -  O  -  -
+3  -  -  -  O  -  O  O
+4  O  O  O  O  O  O  O
+5        O  O  O
+6        O  O  O
+
+(6, 3) -> (4, 3)
+   0  1  2  3  4  5  6
+0        -  -  -
+1        O  -  -
+2  -  -  -  -  O  -  -
+3  -  -  -  O  O  -  -
+4  O  O  O  O  O  O  O
+5        O  O  O
+6        O  O  O
+
+(4, 3) -> (4, 1)
+   0  1  2  3  4  5  6
+0        -  -  -
+1        O  -  O
+2  -  -  -  -  -  -  -
+3  -  -  -  O  -  -  -
+4  O  O  O  O  O  O  O
+5        O  O  O
+6        O  O  O
+
+(2, 5) -> (2, 3)
+   0  1  2  3  4  5  6
+0        -  -  -
+1        O  -  O
+2  -  -  -  -  -  -  -
+3  -  -  O  O  -  -  -
+4  O  O  -  O  O  O  O
+5        -  O  O
+6        O  O  O
+
+(0, 4) -> (2, 4)
+   0  1  2  3  4  5  6
+0        -  -  -
+1        O  -  O
+2  -  -  -  -  -  -  -
+3  -  -  O  O  -  -  -
+4  -  -  O  O  O  O  O
+5        -  O  O
+6        O  O  O
+
+(2, 4) -> (2, 2)
+   0  1  2  3  4  5  6
+0        -  -  -
+1        O  -  O
+2  -  -  O  -  -  -  -
+3  -  -  -  O  -  -  -
+4  -  -  -  O  O  O  O
+5        -  O  O
+6        O  O  O
+
+(2, 1) -> (2, 3)
+   0  1  2  3  4  5  6
+0        -  -  -
+1        -  -  O
+2  -  -  -  -  -  -  -
+3  -  -  O  O  -  -  -
+4  -  -  -  O  O  O  O
+5        -  O  O
+6        O  O  O
+
+(2, 3) -> (4, 3)
+   0  1  2  3  4  5  6
+0        -  -  -
+1        -  -  O
+2  -  -  -  -  -  -  -
+3  -  -  -  -  O  -  -
+4  -  -  -  O  O  O  O
+5        -  O  O
+6        O  O  O
+
+(4, 4) -> (4, 2)
+   0  1  2  3  4  5  6
+0        -  -  -
+1        -  -  O
+2  -  -  -  -  O  -  -
+3  -  -  -  -  -  -  -
+4  -  -  -  O  -  O  O
+5        -  O  O
+6        O  O  O
+
+(4, 1) -> (4, 3)
+   0  1  2  3  4  5  6
+0        -  -  -
+1        -  -  -
+2  -  -  -  -  -  -  -
+3  -  -  -  -  O  -  -
+4  -  -  -  O  -  O  O
+5        -  O  O
+6        O  O  O
+
+(6, 4) -> (4, 4)
+   0  1  2  3  4  5  6
+0        -  -  -
+1        -  -  -
+2  -  -  -  -  -  -  -
+3  -  -  -  -  O  -  -
+4  -  -  -  O  O  -  -
+5        -  O  O
+6        O  O  O
+
+(3, 4) -> (5, 4)
+   0  1  2  3  4  5  6
+0        -  -  -
+1        -  -  -
+2  -  -  -  -  -  -  -
+3  -  -  -  -  O  -  -
+4  -  -  -  -  -  O  -
+5        -  O  O
+6        O  O  O
+
+(4, 6) -> (4, 4)
+   0  1  2  3  4  5  6
+0        -  -  -
+1        -  -  -
+2  -  -  -  -  -  -  -
+3  -  -  -  -  O  -  -
+4  -  -  -  -  O  O  -
+5        -  O  -
+6        O  O  -
+
+(4, 3) -> (4, 5)
+   0  1  2  3  4  5  6
+0        -  -  -
+1        -  -  -
+2  -  -  -  -  -  -  -
+3  -  -  -  -  -  -  -
+4  -  -  -  -  -  O  -
+5        -  O  O
+6        O  O  -
+
+(2, 6) -> (4, 6)
+   0  1  2  3  4  5  6
+0        -  -  -
+1        -  -  -
+2  -  -  -  -  -  -  -
+3  -  -  -  -  -  -  -
+4  -  -  -  -  -  O  -
+5        -  O  O
+6        -  -  O
+
+(4, 6) -> (4, 4)
+   0  1  2  3  4  5  6
+0        -  -  -
+1        -  -  -
+2  -  -  -  -  -  -  -
+3  -  -  -  -  -  -  -
+4  -  -  -  -  O  O  -
+5        -  O  -
+6        -  -  -
+
+(5, 4) -> (3, 4)
+   0  1  2  3  4  5  6
+0        -  -  -
+1        -  -  -
+2  -  -  -  -  -  -  -
+3  -  -  -  -  -  -  -
+4  -  -  -  O  -  -  -
+5        -  O  -
+6        -  -  -
+
+(3, 5) -> (3, 3)
+   0  1  2  3  4  5  6
+0        -  -  -
+1        -  -  -
+2  -  -  -  -  -  -  -
+3  -  -  -  O  -  -  -
+4  -  -  -  -  -  -  -
+5        -  -  -
+6        -  -  -
+
+jdorr@DESKTOP-MF9T345 /cygdrive/c/Users/jdorr/Desktop/Dev/PegSolitaire/src
+$
 ```
 
 Finally, you can also try running the program on the [Try OCAML](https://try.ocamlpro.com/) website. It will be *very* slow, and you'll need to comment-out any `input_line stdin` statements as the site does not appear to support user input. The site will also think that the application is stuck in an infinite loop and attempt to timeout. Simply hit the <kbd>10 seconds!</kbd> button to bump-up the timeout:
 
-(10fps)  
 ![Screenshot](https://github.com/James-P-D/PegSolitaire/blob/master/tryocamlwebsite.gif)
