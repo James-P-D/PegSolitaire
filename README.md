@@ -4,8 +4,6 @@
 
 ![Screenshot](https://github.com/James-P-D/PegSolitaire/blob/master/screenshot.gif)
 
-*(Note this screenshot has been edited for brevity. The full process to search for a solution actually took ~15 seconds.)*
-
 ## Details
 
 Peg-Solitaire is a one-player game in which a number of marbles are placed on a grid with one empty location in the centre. The objective of the game is to remove marbles from the grid by jumping over them into empty locations, eventually resulting in a board which contains only one marble in the centre cell. Note that marbles can only jump horizontally and vertically and not diagonally, and that they can only jump over pieces that are immediate neighbours.
@@ -451,6 +449,6 @@ jdorr@DESKTOP-MF9T345 /cygdrive/c/Users/jdorr/Desktop/Dev/PegSolitaire/src
 $
 ```
 
-Finally, you can also try running the program on the [Try OCAML](https://try.ocamlpro.com/) website. It will be *very* slow, and you'll need to comment-out any `input_line stdin` statements as the site does not appear to support user input. The site will also think that the application is stuck in an infinite loop and attempt to timeout. Simply hit the <kbd>10 seconds!</kbd> button to bump-up the timeout:
+Finally, you can also try running the program on the [Try OCAML](https://try.ocamlpro.com/) website. It will be *very* slow (2m40s on my machine), and you'll need to comment-out any `input_line stdin` statements as the site does not appear to support user input. The site will also think that the application is stuck in an infinite loop and attempt to timeout. Simply hit the <kbd>10 seconds!</kbd> button to bump-up the timeout:
 
 ![Screenshot](https://github.com/James-P-D/PegSolitaire/blob/master/tryocamlwebsite.gif)
