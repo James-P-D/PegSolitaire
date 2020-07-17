@@ -32,8 +32,6 @@ let english_board = [[void;   void;   marble; marble; marble; void;   void];
 
 (********************************************************************************)
 
-(********************************************************************************)
-
 (* Convert an integer to a string. Marbles are '0', empty spaces are '-', and
    cells which are not on the board are ' ' *)
 
@@ -125,7 +123,6 @@ let is_complete board width height =
    jumped over it. *)
 
 let apply_move board width height x1 y1 x2 y2 =
-  (* Printf.printf "(%d, %d) -> (%d, %d)\n" x1 y1 x2 y2; *)  
   let new_board = ref [] in
   let new_row = ref [] in
   let middle_x = ((x1 + x2) / 2) in
@@ -210,13 +207,13 @@ let rec apply_move_list board width height solution_list =
       draw_board board width height;
       let _ = input_line stdin in
       let (x1, y1, x2, y2) = head in
+      Printf.printf "(%d, %d) -> (%d, %d)\n" x1 y1 x2 y2;  
       let new_board = apply_move board width height x1 y1 x2 y2 in
       apply_move_list (!new_board) width height tail;;
   
 (********************************************************************************)
 
 let rec get_all_marble_positions board width height x y =
-  (*Printf.printf "get_all_marble_positions (%d, %d)\n" x y;*)
   if ((x + 1) == width) then (
     if ((y + 1) == height) then (
       if (is_marble board x y) then (
@@ -250,7 +247,7 @@ let rec test_marbles board width height all_marble_positions =
   | head::tail -> let (x, y) = head in
       let possible_moves = get_moves board width height x y in
       let (success, moves) = test_move board width height x y !possible_moves in 
-      if(success) then (true, [])
+      if(success) then (true, moves)
       else test_marbles board width height tail
 
 and test_move board width height x1 y1 possible_moves = 
@@ -259,13 +256,16 @@ and test_move board width height x1 y1 possible_moves =
   | head::tail -> let (x2, y2) = head in
       let new_board = apply_move board width height x1 y1 x2 y2 in
       let (success, moves) = (solve (!new_board) width height) in
-      if (success) then (true, []) (*x1 y1 x2 y2*)
-      else test_move board width height x1 y1 tail
+      if (success) then (true, (x1, y1, x2, y2)::moves)
+      else (
+        let (rec_success, rec_moves) = test_move board width height x1 y1 tail in
+        if (rec_success) then (true, (x1, y1, x2, y2)::rec_moves)
+        else (false, [])
+      )
    
 and solve board width height =
   if (is_complete board width height) then (
     draw_board board width height;
-    print_endline "Success!";
     (true, [])
   ) else (
     let all_marble_positions = get_all_marble_positions board width height in
@@ -274,37 +274,16 @@ and solve board width height =
 
 (********************************************************************************)
 
-let rec display_moves m =
-  match m with
-  | [] ->
-      print_string("done!")
-  | head::tail -> 
-      let (x1, y1, x2, y2) = head in
-      Printf.printf "(%d, %d, %d, %d)\n" x1 y1 x2 y2;
-      display_moves tail;;
-
-(********************************************************************************)
-
-
 let solve_english =
   draw_board english_board english_board_width english_board_height;
-  let (success, moves) = solve english_board english_board_width english_board_height in
-  print_string ("success = " ^ string_of_bool(success) ^ "\n");
-  display_moves moves;;
-
-
-(********************************************************************************)
-
-(*
-let solve_english =
-  Printf.printf "Starting solve... This may take several minutes..!\n"    
-  draw_board english_board english_board_width english_board_height;
-  Printf.printf "Complete!\n"    
-  let solution_list = solve english_board english_board_width english_board_height [] in
-  if (List.length solution_list > 0) then (
-    Printf.printf "Press ENTER to step through moves to complete puzzle\n\n"
-    apply_move_list board width height solution_list;;  
+  let (success, moves) = solve english_board english_board_width english_board_height in  
+  if (success) then (
+    Printf.printf "Success!\n";
+    Printf.printf "Press ENTER to step through moves to complete puzzle\n\n";
+    apply_move_list english_board english_board_width english_board_height moves;
+    Printf.printf "Complete!\n";
   ) else (  
     Printf.printf "No solution found!\n"
   )
-*) 
+
+(********************************************************************************)
