@@ -77,6 +77,8 @@ let draw_board board width height =
 
 (********************************************************************************)
 
+(* Check if pieces at (x, y) is a marble or not *)
+
 let is_marble board x y =
   if ((get_item board x y) == marble) then true else false;;
 
@@ -161,6 +163,8 @@ let apply_move board width height x1 y1 x2 y2 =
   
 (********************************************************************************)
 
+(* Get the possible moves for piece at (x, y) *)
+
 let get_moves board width height x y =
   let moves = ref [] in
   let move_piece = get_item board x y in
@@ -198,6 +202,8 @@ let get_moves board width height x y =
 
 (********************************************************************************) 
 
+(* Recursively apply the moves from solution_list to board *)
+
 let rec apply_move_list board width height solution_list =
   match solution_list with
   | [] ->
@@ -212,6 +218,8 @@ let rec apply_move_list board width height solution_list =
       apply_move_list (!new_board) width height tail;;
   
 (********************************************************************************)
+
+(* Get the positions of all marbles on the board *)
 
 let rec get_all_marble_positions board width height x y =
   if ((x + 1) == width) then (
@@ -238,8 +246,16 @@ let rec get_all_marble_positions board width height x y =
     )
   );;
 
+(********************************************************************************)
+
+(* Get the positions of all marbles on the board, starting at (0, 0) *)
+
 let get_all_marble_positions board width height =
   get_all_marble_positions board width height 0 0;;
+
+(********************************************************************************)
+
+(* Test possible marble positions *)
 
 let rec test_marbles board width height all_marble_positions =
   match all_marble_positions with
@@ -249,6 +265,10 @@ let rec test_marbles board width height all_marble_positions =
       let (success, moves) = test_move board width height x y !possible_moves in 
       if(success) then (true, moves)
       else test_marbles board width height tail
+
+(********************************************************************************)
+
+(* Test possible moves *)
 
 and test_move board width height x1 y1 possible_moves = 
   match possible_moves with
@@ -263,6 +283,10 @@ and test_move board width height x1 y1 possible_moves =
         else (false, [])
       )
    
+(********************************************************************************)
+
+(* Check if board is solved, and if not, attempt to solve it *)
+
 and solve board width height =
   if (is_complete board width height) then (
     draw_board board width height;
@@ -273,6 +297,8 @@ and solve board width height =
   )
 
 (********************************************************************************)
+
+(* Solve the English Peg Solitaire board *)
 
 let solve_english =
   draw_board english_board english_board_width english_board_height;
