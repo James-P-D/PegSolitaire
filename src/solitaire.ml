@@ -246,25 +246,27 @@ let get_all_marble_positions board width height =
 
 let rec test_marbles board width height all_marble_positions =
   match all_marble_positions with
-  | [] -> false;
+  | [] -> (false, []);
   | head::tail -> let (x, y) = head in
       let possible_moves = get_moves board width height x y in
-      if(test_move board width height x y !possible_moves) then true
+      let (success, moves) = test_move board width height x y !possible_moves in 
+      if(success) then (true, [])
       else test_marbles board width height tail
 
 and test_move board width height x1 y1 possible_moves = 
   match possible_moves with
-  | [] -> false;
+  | [] -> (false, []);
   | head::tail -> let (x2, y2) = head in
       let new_board = apply_move board width height x1 y1 x2 y2 in
-      if(solve (!new_board) width height) then true
+      let (success, moves) = (solve (!new_board) width height) in
+      if (success) then (true, []) (*x1 y1 x2 y2*)
       else test_move board width height x1 y1 tail
    
 and solve board width height =
   if (is_complete board width height) then (
     draw_board board width height;
     print_endline "Success!";
-    true
+    (true, [])
   ) else (
     let all_marble_positions = get_all_marble_positions board width height in
     test_marbles board width height all_marble_positions;
@@ -272,10 +274,23 @@ and solve board width height =
 
 (********************************************************************************)
 
+let rec display_moves m =
+  match m with
+  | [] ->
+      print_string("done!")
+  | head::tail -> 
+      let (x1, y1, x2, y2) = head in
+      Printf.printf "(%d, %d, %d, %d)\n" x1 y1 x2 y2;
+      display_moves tail;;
+
+(********************************************************************************)
+
 
 let solve_english =
   draw_board english_board english_board_width english_board_height;
-  solve english_board english_board_width english_board_height;;
+  let (success, moves) = solve english_board english_board_width english_board_height in
+  print_string ("success = " ^ string_of_bool(success) ^ "\n");
+  display_moves moves;;
 
 
 (********************************************************************************)
@@ -292,4 +307,4 @@ let solve_english =
   ) else (  
     Printf.printf "No solution found!\n"
   )
-*)
+*) 
