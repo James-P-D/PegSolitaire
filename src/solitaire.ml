@@ -276,14 +276,13 @@ and solve board width height =
 
 let solve_english =
   draw_board english_board english_board_width english_board_height;
-  let (success, moves) = solve english_board english_board_width english_board_height in  
-  if (success) then (
-    Printf.printf "Success!\n";
-    Printf.printf "Press ENTER to step through moves to complete puzzle\n\n";
-    apply_move_list english_board english_board_width english_board_height moves;
-    Printf.printf "Complete!\n";
-  ) else (  
-    Printf.printf "No solution found!\n"
+  let (success, moves) = solve english_board english_board_width english_board_height in  (
+    if (success) then (
+      Printf.printf "Success!\n";
+      Printf.printf "Press ENTER to step through moves to complete puzzle\n\n";
+      apply_move_list english_board english_board_width english_board_height moves;
+    ) else (
+      Printf.printf "No solution found!\n";
+      apply_move_list english_board english_board_width english_board_height moves;
+    )
   )
-
-(********************************************************************************)
